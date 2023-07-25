@@ -5,6 +5,8 @@ import { useReducer, useState } from "react";
 import useSWR from "swr";
 import { BudgetItem } from "./BudgetItem";
 import { budgetItemsReducer } from "@/reducers/budgetItemReducer";
+import { convertToCSV } from "@/utils/convertToCSV";
+import { CSVToExcelButton } from "./CSVToExcelButton";
 
 const fetchExchangeRate = async (
   url: string,
@@ -37,6 +39,7 @@ export function TripForm({
   const [budgetItems, dispatchBudgetItems] = useReducer(budgetItemsReducer, [
     { name: "", cost: 0 },
   ]);
+  console.log(budgetItems);
 
   const { data: exchangeRate } = useSWR(
     [
@@ -64,15 +67,6 @@ export function TripForm({
             </option>
           ))}
         </select>
-        {exchangeRate && (
-          <span className="space-x-2">
-            <label>Total expenses </label>
-            <span>
-              {countryCurrency.symbol}
-              {(exchangeRate.data * totalBudget).toFixed(2)}
-            </span>
-          </span>
-        )}
 
         {budgetItems.map((item, index) => (
           <BudgetItem
@@ -95,6 +89,19 @@ export function TripForm({
           Add budget item
         </button>
       </form>
+
+      {exchangeRate && (
+        <div className="mb-2">
+          <span className="space-x-2">
+            <label>Total expenses </label>
+            <span>
+              {countryCurrency.symbol}
+              {(exchangeRate.data * totalBudget).toFixed(2)}
+            </span>
+          </span>
+        </div>
+      )}
+      {/* <CSVToExcelButton csv={convertToCSV(budgetItems)} /> */}
     </>
   );
 }
