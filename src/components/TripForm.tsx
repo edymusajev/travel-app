@@ -140,7 +140,13 @@ export function TripForm({
             localCurrencySymbol: countryCurrency.symbol as string,
           })}
         />
-        <GenerateChartButton />
+        <GenerateChartButton
+          data={budgetItemsWithTotalAndConversion.map((item) => ({
+            name: item.name,
+            value: item.cost,
+            currency: currencies.find((c) => c.key === currency)?.symbol ?? "",
+          }))}
+        />
       </div>
     </>
   );
