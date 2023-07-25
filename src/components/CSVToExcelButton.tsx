@@ -3,7 +3,6 @@
 import { getExcelData } from "@/apis/getExcelData";
 
 export function CSVToExcelButton({ csv }: { csv: string }) {
-  console.log(csv);
   return (
     <button
       className="border py-2 px-4"
