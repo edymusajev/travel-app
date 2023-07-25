@@ -18,3 +18,18 @@ export type Currency = {
   value: string;
   symbol?: string;
 };
+
+export type BudgetItem = {
+  name: string;
+  cost: number;
+};
+
+export type BudgetItemsAction =
+  | { type: "add" }
+  | { type: "remove"; index: number }
+  | {
+      type: "update";
+      index: number;
+      field: keyof BudgetItem;
+      value: string | number;
+    };
