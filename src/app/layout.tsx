@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <nav className="p-8">
-          <Link href="/">Travel Budgeting App</Link>
+          <Link href="/">Travel Budgeting App ✈️</Link>
         </nav>
-        <main className="m-32">{children}</main>
+        <main className="m-8">{children}</main>
       </body>
     </html>
   );

@@ -75,9 +75,13 @@ export function TripForm({
 
   return (
     <>
-      <form className="my-16 flex flex-col space-y-4">
+      <form
+        className="my-16 flex flex-col space-y-4
+        
+      "
+      >
         <select
-          className="border py-2 px-4"
+          className="border py-2 px-4 rounded"
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
         >
