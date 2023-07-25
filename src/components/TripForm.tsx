@@ -9,25 +9,7 @@ import { convertToCSV } from "@/utils/convertToCSV";
 import { CSVToExcelButton } from "./CSVToExcelButton";
 import { CSVToPDFButton } from "./CSVToPDFButton";
 import { GenerateChartButton } from "./GenerateChartButton";
-
-const fetchExchangeRate = async (
-  url: string,
-  sourceCurrencyKey: string,
-  targetCurrencyKey: string
-): Promise<{ data: number }> => {
-  const res = await fetch(url, {
-    headers: {
-      "apy-token": process.env.NEXT_PUBLIC_APY_TOKEN as string,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({
-      source: sourceCurrencyKey,
-      target: targetCurrencyKey,
-    }),
-  });
-  return res.json();
-};
+import { getExchangeRate } from "@/apis/getExchangeRate";
 
 export function TripForm({
   currencies,
@@ -49,7 +31,7 @@ export function TripForm({
       countryCurrency.key,
     ],
     ([url, currency, countryCurrencyKey]) =>
-      fetchExchangeRate(url, currency, countryCurrency.key)
+      getExchangeRate(url, currency, countryCurrency.key)
   );
 
   const totalBudget = budgetItems.reduce((total, item) => total + item.cost, 0);

@@ -1,35 +1,8 @@
+import { getCountryData } from "@/apis/getCountryData";
+import { getCurrencies } from "@/apis/getCurrencies";
 import { TripForm } from "@/components/TripForm";
 import { Country, Currency } from "@/types";
 //
-
-async function getCountryData(slug: string) {
-  const res = await fetch(
-    `https://api.apyhub.com/data/info/country?country=${slug}`,
-    {
-      headers: {
-        "apy-token": process.env.NEXT_PUBLIC_APY_TOKEN as string,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const data: {
-    data: Country;
-  } = await res.json();
-  return data.data;
-}
-
-async function getCurrencies() {
-  const res = await fetch("https://api.apyhub.com/data/dictionary/currency", {
-    headers: {
-      "apy-token": process.env.NEXT_PUBLIC_APY_TOKEN as string,
-      "Content-Type": "application/json",
-    },
-  });
-  const data: {
-    data: Currency[];
-  } = await res.json();
-  return data.data;
-}
 
 export default async function CountryPage({
   params,
