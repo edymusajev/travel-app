@@ -7,6 +7,7 @@ import { BudgetItem } from "./BudgetItem";
 import { budgetItemsReducer } from "@/reducers/budgetItemReducer";
 import { convertToCSV } from "@/utils/convertToCSV";
 import { CSVToExcelButton } from "./CSVToExcelButton";
+import { CSVToPDFButton } from "./CSVToPDFButton";
 
 const fetchExchangeRate = async (
   url: string,
@@ -102,7 +103,10 @@ export function TripForm({
           </span>
         </div>
       )}
-      <CSVToExcelButton csv={convertToCSV(budgetItems)} />
+      <div className="space-x-4">
+        <CSVToExcelButton csv={convertToCSV(budgetItems)} />
+        <CSVToPDFButton csv={convertToCSV(budgetItems)} />
+      </div>
     </>
   );
 }
