@@ -11,6 +11,10 @@ export default async function CountryPage({
 }) {
   const country = await getCountryData(params.slug);
   const currencies = await getCurrencies();
+
+  if (!country) {
+    return <div>Country not found</div>;
+  }
   return (
     <>
       <h1 className="text-xl">

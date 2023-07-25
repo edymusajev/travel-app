@@ -1,6 +1,6 @@
 import { Country } from "@/types";
 
-export async function getCountryData(slug: string) {
+export async function getCountryData(slug: string): Promise<void | Country> {
   const res = await fetch(
     `https://api.apyhub.com/data/info/country?country=${slug}`,
     {

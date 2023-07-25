@@ -4,10 +4,13 @@ import { Country } from "@/types";
 import Link from "next/link";
 import { useState } from "react";
 
-export function CountryList({ countries }: { countries: Country[] }) {
+export function CountryList({ countries }: { countries: Country[] | null }) {
   const [filteredCountries, setFilteredCountries] = useState("");
 
   const renderList = () => {
+    if (!countries) {
+      return <li>No countries found</li>;
+    }
     return countries
       .filter((country) => {
         if (filteredCountries !== "") {
@@ -38,7 +41,7 @@ export function CountryList({ countries }: { countries: Country[] }) {
           onChange={(e) => setFilteredCountries(e.target.value)}
         />
       </form>
-      <ul className="space-y-2 mt-4">{renderList()}</ul>
+      <ul className="space-y- mt-4">{renderList()}</ul>
     </>
   );
 }

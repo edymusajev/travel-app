@@ -15,7 +15,7 @@ export function TripForm({
   currencies,
   countryCurrency,
 }: {
-  currencies: Currency[];
+  currencies: Currency[] | void;
   countryCurrency: Currency;
 }) {
   const [currency, setCurrency] = useState("EUR");
@@ -67,7 +67,7 @@ export function TripForm({
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
         >
-          {currencies.map((currency) => (
+          {currencies?.map((currency) => (
             <option key={currency.key} value={currency.key}>
               {currency.key} - {currency.value}
             </option>
@@ -114,14 +114,14 @@ export function TripForm({
       <div className="space-x-4">
         <CSVToExcelButton
           csv={convertToCSV(budgetItemsWithTotalAndConversion, {
-            userCurrencySymbol: currencies.find((c) => c.key === currency)
+            userCurrencySymbol: currencies?.find((c) => c.key === currency)
               ?.symbol as string,
             localCurrencySymbol: countryCurrency.symbol as string,
           })}
         />
         <CSVToPDFButton
           csv={convertToCSV(budgetItemsWithTotalAndConversion, {
-            userCurrencySymbol: currencies.find((c) => c.key === currency)
+            userCurrencySymbol: currencies?.find((c) => c.key === currency)
               ?.symbol as string,
             localCurrencySymbol: countryCurrency.symbol as string,
           })}
@@ -130,7 +130,7 @@ export function TripForm({
           data={budgetItemsWithTotalAndConversion.map((item) => ({
             name: item.name,
             value: item.cost,
-            currency: currencies.find((c) => c.key === currency)?.symbol ?? "",
+            currency: currencies?.find((c) => c.key === currency)?.symbol ?? "",
           }))}
         />
       </div>
