@@ -31,13 +31,14 @@ export function CountryList({ countries }: { countries: Country[] }) {
     <>
       <form>
         <input
-          className="border"
+          className="border py-2 px-4"
+          placeholder="Search for a country"
           type="text"
           value={filteredCountries}
           onChange={(e) => setFilteredCountries(e.target.value)}
         />
       </form>
-      <ul className="space-y-2">{renderList()}</ul>
+      <ul className="space-y-2 mt-4">{renderList()}</ul>
     </>
   );
 }

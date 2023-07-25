@@ -8,6 +8,7 @@ import { budgetItemsReducer } from "@/reducers/budgetItemReducer";
 import { convertToCSV } from "@/utils/convertToCSV";
 import { CSVToExcelButton } from "./CSVToExcelButton";
 import { CSVToPDFButton } from "./CSVToPDFButton";
+import { GenerateChartButton } from "./GenerateChartButton";
 
 const fetchExchangeRate = async (
   url: string,
@@ -40,7 +41,6 @@ export function TripForm({
     { name: "Food", cost: 200 },
     { name: "Accommodation", cost: 500 },
   ]);
-  console.log(countryCurrency);
 
   const { data: exchangeRate } = useSWR(
     [
@@ -54,13 +54,22 @@ export function TripForm({
 
   const totalBudget = budgetItems.reduce((total, item) => total + item.cost, 0);
 
-  const budgetItemsWithTotal = [
-    ...budgetItems,
+  const budgetItemsWithConvertedCosts = budgetItems.map((item) => ({
+    name: item.name,
+    cost: item.cost,
+    localCost: exchangeRate
+      ? (exchangeRate.data * item.cost).toFixed(2)
+      : "N/A",
+  }));
+
+  const budgetItemsWithTotalAndConversion = [
+    ...budgetItemsWithConvertedCosts,
     {
-      name: "Total",
-      cost: exchangeRate
+      name: `Total expenses`,
+      cost: totalBudget,
+      localCost: exchangeRate
         ? (exchangeRate.data * totalBudget).toFixed(2)
-        : totalBudget,
+        : "N/A",
     },
   ];
 
@@ -84,6 +93,8 @@ export function TripForm({
             key={index}
             item={item}
             index={index}
+            exchangeRate={exchangeRate?.data}
+            countryCurrency={countryCurrency}
             onItemChange={(index, field, value) =>
               dispatchBudgetItems({ type: "update", index, field, value })
             }
@@ -92,20 +103,22 @@ export function TripForm({
             }
           />
         ))}
-        <button
-          className="border py-2 px-4 bg-blue-500 text-white"
-          type="button"
-          onClick={() => dispatchBudgetItems({ type: "add" })}
-        >
-          Add budget item
-        </button>
+        <div>
+          <button
+            className="border py-2 px-4 bg-blue-500 text-white rounded"
+            type="button"
+            onClick={() => dispatchBudgetItems({ type: "add" })}
+          >
+            Add budget item
+          </button>
+        </div>
       </form>
 
       {exchangeRate && (
-        <div className="mb-2">
+        <div className="mb-12">
           <span className="space-x-2">
             <label>Total expenses </label>
-            <span>
+            <span className="text-xl">
               {countryCurrency.symbol}
               {(exchangeRate.data * totalBudget).toFixed(2)}
             </span>
@@ -113,8 +126,21 @@ export function TripForm({
         </div>
       )}
       <div className="space-x-4">
-        <CSVToExcelButton csv={convertToCSV(budgetItemsWithTotal)} />
-        <CSVToPDFButton csv={convertToCSV(budgetItemsWithTotal)} />
+        <CSVToExcelButton
+          csv={convertToCSV(budgetItemsWithTotalAndConversion, {
+            userCurrencySymbol: currencies.find((c) => c.key === currency)
+              ?.symbol as string,
+            localCurrencySymbol: countryCurrency.symbol as string,
+          })}
+        />
+        <CSVToPDFButton
+          csv={convertToCSV(budgetItemsWithTotalAndConversion, {
+            userCurrencySymbol: currencies.find((c) => c.key === currency)
+              ?.symbol as string,
+            localCurrencySymbol: countryCurrency.symbol as string,
+          })}
+        />
+        <GenerateChartButton />
       </div>
     </>
   );

@@ -1,6 +1,21 @@
-export function convertToCSV(objArray: { [key: string]: any }) {
+export function convertToCSV(
+  objArray: { [key: string]: any },
+  currencies: { userCurrencySymbol: string; localCurrencySymbol: string }
+) {
   const array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
-  let str = `${Object.keys(array[0]).join()}\r\n`;
+  let headers = Object.keys(array[0]);
+
+  // Update headers based on currency information
+  headers = headers.map((header) => {
+    if (header === "cost") {
+      return `cost (in ${currencies.userCurrencySymbol})`;
+    } else if (header === "localCost") {
+      return `local cost (in ${currencies.localCurrencySymbol})`;
+    }
+    return header;
+  });
+
+  let str = `${headers.join()}\r\n`;
 
   for (let i = 0; i < array.length; i++) {
     let line = "";
@@ -12,6 +27,5 @@ export function convertToCSV(objArray: { [key: string]: any }) {
 
     str += line + "\r\n";
   }
-  console.log(str);
   return str;
 }
