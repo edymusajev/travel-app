@@ -1,6 +1,6 @@
 "use client";
 
-import { BudgetItemsAction, Currency } from "@/types";
+import { Currency } from "@/types";
 import { useReducer, useState } from "react";
 import useSWR from "swr";
 import { BudgetItem } from "./BudgetItem";
@@ -37,7 +37,8 @@ export function TripForm({
   const [currency, setCurrency] = useState("EUR");
   const [budget, setBudget] = useState(1);
   const [budgetItems, dispatchBudgetItems] = useReducer(budgetItemsReducer, [
-    { name: "", cost: 0 },
+    { name: "Food", cost: 200 },
+    { name: "Accommodation", cost: 500 },
   ]);
   console.log(budgetItems);
 
@@ -101,7 +102,7 @@ export function TripForm({
           </span>
         </div>
       )}
-      {/* <CSVToExcelButton csv={convertToCSV(budgetItems)} /> */}
+      <CSVToExcelButton csv={convertToCSV(budgetItems)} />
     </>
   );
 }
