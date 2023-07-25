@@ -36,12 +36,11 @@ export function TripForm({
   countryCurrency: Currency;
 }) {
   const [currency, setCurrency] = useState("EUR");
-  const [budget, setBudget] = useState(1);
   const [budgetItems, dispatchBudgetItems] = useReducer(budgetItemsReducer, [
     { name: "Food", cost: 200 },
     { name: "Accommodation", cost: 500 },
   ]);
-  console.log(budgetItems);
+  console.log(countryCurrency);
 
   const { data: exchangeRate } = useSWR(
     [
@@ -54,6 +53,16 @@ export function TripForm({
   );
 
   const totalBudget = budgetItems.reduce((total, item) => total + item.cost, 0);
+
+  const budgetItemsWithTotal = [
+    ...budgetItems,
+    {
+      name: "Total",
+      cost: exchangeRate
+        ? (exchangeRate.data * totalBudget).toFixed(2)
+        : totalBudget,
+    },
+  ];
 
   return (
     <>
@@ -104,8 +113,8 @@ export function TripForm({
         </div>
       )}
       <div className="space-x-4">
-        <CSVToExcelButton csv={convertToCSV(budgetItems)} />
-        <CSVToPDFButton csv={convertToCSV(budgetItems)} />
+        <CSVToExcelButton csv={convertToCSV(budgetItemsWithTotal)} />
+        <CSVToPDFButton csv={convertToCSV(budgetItemsWithTotal)} />
       </div>
     </>
   );
