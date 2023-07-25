@@ -1,4 +1,6 @@
-export const getExcelData = async (csv: string): Promise<{ data: string }> => {
+export const getExcelData = async (
+  csv: string
+): Promise<{ data: string } | void> => {
   let formData = new FormData();
   let csvFile = new File([csv], "data.csv", { type: "text/csv" });
   formData.append("file", csvFile);

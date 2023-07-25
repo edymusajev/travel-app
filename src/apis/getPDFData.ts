@@ -1,4 +1,6 @@
-export const getPDFData = async (url: string): Promise<{ data: string }> => {
+export const getPDFData = async (
+  url: string
+): Promise<{ data: string } | void> => {
   const res = await fetch(
     "https://api.apyhub.com/convert/spreadsheet-url/pdf-url",
     {

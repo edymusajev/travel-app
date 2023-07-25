@@ -8,7 +8,7 @@ export function CSVToExcelButton({ csv }: { csv: string }) {
     <button
       className="border py-2 px-4"
       onClick={async () => {
-        const excelData = await getExcelData(csv);
+        const excelData = (await getExcelData(csv)) as { data: string };
         let link = document.createElement("a");
         link.href = excelData.data;
         link.download = "data.xlsx";

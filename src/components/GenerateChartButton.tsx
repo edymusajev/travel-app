@@ -14,9 +14,9 @@ export function GenerateChartButton({ data }: ChartProps) {
     <button
       className="border py-2 px-4"
       onClick={async () => {
-        const chartData = await getPieChart(
+        const chartData = (await getPieChart(
           data.filter((item) => item.name !== "Total expenses")
-        );
+        )) as { data: string };
         let link = document.createElement("a");
         link.href = chartData.data;
         link.download = "chart.png";

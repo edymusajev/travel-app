@@ -1,6 +1,8 @@
 import { ChartData } from "@/components/GenerateChartButton";
 
-export async function getPieChart(data: ChartData[]) {
+export async function getPieChart(data: ChartData[]): Promise<{
+  data: string;
+} | void> {
   const bodyData = data.map((item) => ({
     value: item.value,
     label: item.name,

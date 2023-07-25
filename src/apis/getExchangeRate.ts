@@ -2,7 +2,7 @@ export const getExchangeRate = async (
   url: string,
   sourceCurrencyKey: string,
   targetCurrencyKey: string
-): Promise<{ data: number }> => {
+): Promise<{ data: number } | void> => {
   const res = await fetch(url, {
     headers: {
       "apy-token": process.env.NEXT_PUBLIC_APY_TOKEN as string,
